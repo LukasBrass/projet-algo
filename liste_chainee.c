@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct maillon
 {
@@ -20,6 +21,23 @@ maillon* find(maillon* element, int abscisse, int ordonnee){
 	while(element->ordonnee < ordonnee)
 		element = element->bas;
 	return element;
+}
+
+void randomMines(maillon* liste, int longueur, int largeur)
+{
+	int nbmines = (longueur*largeur) / 10;
+	int i = 0;
+	int rand_x, rand_y;
+	srand(time(NULL));
+	while(i <= nbmines){
+		rand_x = rand()%longueur + 1;
+		rand_y = rand()%largeur + 1;
+		maillon* maillon = find(liste,rand_x,rand_y);
+		if(maillon->isMine == 1)
+			continue;
+		maillon->isMine = 1;
+		i++;
+	}
 }
 
 maillon* initiate(int longueur, int largeur)
@@ -60,6 +78,7 @@ maillon* initiate(int longueur, int largeur)
     {
         exit(EXIT_FAILURE);
     }
+	randomMines(first, longueur, largeur);
     return first;
 }
 
@@ -69,7 +88,7 @@ int winChecker(maillon* liste, int abscisse, int ordonnee)
 	for(i = 1; i <= abscisse;i++){
 			for(j = 1; j <= ordonnee;j++){
 					maillon* maillon = find(liste,i,j);
-					if(maillon->isMine == 0 && maillon->isFlag == 0)
+					if(maillon->isMine == 1 && maillon->isFlag == 0)
 						return 0;
 			}
 	}
