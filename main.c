@@ -1,18 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "liste_chainee.c"
+#include "actions.c"
 #define CLEAR_BUFFER while (getchar() != '\n')
 
   int main(void) {
-    int a, b, maxlongueur, maxlargeur, i, j, chainlength;
+    int maxlongueur, maxlargeur, i, j, chainlength,type;
 	short oldIsOpened,oldIsFlag;
     short success = 0;
 	printf("Choisissez une taille de grille : \nlongueur : ");
-    scanf("%d", & a);
+    scanf("%d", & i);
     printf("largeur : ");
-    scanf("%d", & b);
-    maxlongueur = a;
-    maxlargeur = b;
+    scanf("%d", & j);
+    maxlongueur = i;
+    maxlargeur = j;
 	maillon* liste = initiate(maxlongueur,maxlargeur);
 	//Variables for undo redo
 	maillon* oldmaillon;
@@ -71,51 +72,13 @@
         printf("this is a redo");
         continue;
       }
-      //OPEN
-      if (strcmp(actionchaine, "open") == 0 || strcmp(actionchaine, "flag") == 0) {
-        printf("Choisissez une longueur, ou entrez 0 pour retourner en arriere : ");
-        scanf("%d", & a);
-        if (a <= 0) {
-          CLEAR_BUFFER;
-          continue;
-        }
-        if (a > maxlongueur) {
-          printf("La longueur choisie est au dessus de la limite, retour en arrière\n");
-          CLEAR_BUFFER;
-          continue;
-        }
-        printf("Choisissez une largeur : ");
-        scanf("%d", & b);
-        if (b <= 0) {
-          CLEAR_BUFFER;
-          continue;
-        }
-        if (b > maxlargeur) {
-          printf("La largeur choisie est au dessus de la limite, retour en arrière\n");
-          CLEAR_BUFFER;
-          continue;
-        }
-		}
-		if(strcmp(actionchaine, "open") == 0){
-		maillon* maillon = find(liste,a,b);
-		oldmaillon = maillon;
-		oldIsOpened = oldmaillon->isOpened;
-		oldIsFlag = maillon->isFlag;
-		maillon->isOpened = 1;
-		if(maillon->isMine == 1){
-			success = -1;
-			break;
-		}
-      }
-	  else {
-      //FLAG
-		maillon* maillon = find(liste,a,b);
-		oldmaillon = maillon;
-		oldIsOpened = oldmaillon->isOpened;
-		oldIsFlag = maillon->isFlag;
-		maillon->isFlag = 1;
-      }
-	  success = winChecker(liste,maxlongueur,maxlargeur);
+	  if(strcmp(actionchaine, "open") == 0) //OPEN
+	 	type = 2;
+	 if(strcmp(actionchaine, "flag") == 0) //FLAG
+	 	type = 3;
+	  success = openAndFlag(liste,type,maxlongueur,maxlargeur);
+	  if(success != -1)
+	  	success = winChecker(liste,maxlongueur,maxlargeur);
     }
     if (success == 1)
       printf("Félicitations, vous avez gagné !\n");
