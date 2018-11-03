@@ -5,25 +5,25 @@
 
   int main(void) {
     printf("Choisissez une taille de grile : \n");
-    int a, b, maxlongueur, maxlargeur, j, chainlength;
-    int i = 1;
+    int a, b, maxlongueur, maxlargeur, i, j, chainlength;
     short success = 0;
     printf("longueur : ");
     scanf("%d", & a);
     printf("largeur : ");
     scanf("%d", & b);
-    printf("   ");
     maxlongueur = a;
     maxlargeur = b;
 	maillon* liste = initiate(maxlongueur,maxlargeur);
     CLEAR_BUFFER;
     while (success == 0) {
-		while (i <= a)
+	printf("   ");
+		i = 1;
+		while (i <= maxlongueur)
       		printf(" %d ", i++);
     		printf("\n");
-    		for (i = 1; i <= a; i++) {
+    		for (i = 1; i <= maxlongueur; i++) {
       		printf(" %d ", i);
-      		for (j = 1; j <= b; j++){
+      		for (j = 1; j <= maxlargeur; j++){
 				maillon* maillon = find(liste,i,j);
 				if(maillon->isFlag == 1)
         				printf(" F ");
@@ -97,7 +97,6 @@
         continue;
       }
 	  success = winChecker(liste,maxlongueur,maxlargeur);
-	  printf("IS ALIVE\n");
     }
     if (success == 1)
       printf("Félicitations, vous avez gagné !\n");

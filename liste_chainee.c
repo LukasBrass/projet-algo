@@ -15,9 +15,9 @@ typedef struct maillon
 }maillon;
 
 maillon* find(maillon* element, int abscisse, int ordonnee){
-	while(element->abscisse != abscisse)
+	while(element->abscisse < abscisse)
 		element = element->droite;
-	while(element->ordonnee != ordonnee)
+	while(element->ordonnee < ordonnee)
 		element = element->bas;
 	return element;
 }
@@ -86,17 +86,17 @@ int minesNumber(maillon* maillon)
 	if(maillon->droite != NULL){
 		if( maillon->droite->isMine == 1)
 			number++;
-		if(maillon->droite->haut->isMine == 1)
+		if(maillon->droite->haut != NULL && maillon->droite->haut->isMine == 1)
 			number++;
-		if(maillon->droite->bas->isMine == 1)
+		if(maillon->droite->bas != NULL && maillon->droite->bas->isMine == 1)
 			number++;
 	}
 	if(maillon->gauche != NULL) {
 		if( maillon->gauche->isMine == 1)
 			number++;
-		if(maillon->gauche->haut->isMine == 1)
+		if(maillon->gauche->haut != NULL && maillon->gauche->haut->isMine == 1)
 			number++;
-		if(maillon->gauche->bas->isMine == 1)
+		if(maillon->gauche->bas != NULL && maillon->gauche->bas->isMine == 1)
 			number++;
 	}
 	return number;
