@@ -34,6 +34,13 @@ maillon* initiate(int longueur, int largeur)
 			element = (maillon*)malloc(sizeof(maillon));
 			element->abscisse = j;
 			element->ordonnee = i;
+			element->isFlag = 0;
+			element->isOpened = 0;
+			element->isMine = 0; //will change to isMine = function mine;
+			element->droite = NULL;
+			element->gauche = NULL;
+			element->haut = NULL;
+			element->bas = NULL;
 			if(j > 1){
 			elementgauche = find(first,j-1,i);
 			element->gauche = elementgauche;
@@ -54,6 +61,45 @@ maillon* initiate(int longueur, int largeur)
         exit(EXIT_FAILURE);
     }
     return first;
+}
+
+int winChecker(maillon* liste, int abscisse, int ordonnee)
+{
+	int i,j;
+	for(i = 1; i <= abscisse;i++){
+			for(j = 1; j <= ordonnee;j++){
+					maillon* maillon = find(liste,i,j);
+					if(maillon->isMine == 1 && maillon->isFlag == 0)
+						return 0;
+			}
+	}
+	return 1;
+}
+
+int minesNumber(maillon* maillon)
+{
+	int number = 0;
+	if(maillon->haut != NULL && maillon->haut->isMine == 1)
+		number++;
+	if(maillon->bas != NULL && maillon->bas->isMine == 1)
+		number++;
+	if(maillon->droite != NULL){
+		if( maillon->droite->isMine == 1)
+			number++;
+		if(maillon->droite->haut->isMine == 1)
+			number++;
+		if(maillon->droite->bas->isMine == 1)
+			number++;
+	}
+	if(maillon->gauche != NULL) {
+		if( maillon->gauche->isMine == 1)
+			number++;
+		if(maillon->gauche->haut->isMine == 1)
+			number++;
+		if(maillon->gauche->bas->isMine == 1)
+			number++;
+	}
+	return number;
 }
 
 
