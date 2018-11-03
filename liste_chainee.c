@@ -69,7 +69,7 @@ int winChecker(maillon* liste, int abscisse, int ordonnee)
 	for(i = 1; i <= abscisse;i++){
 			for(j = 1; j <= ordonnee;j++){
 					maillon* maillon = find(liste,i,j);
-					if(maillon->isMine == 1 && maillon->isFlag == 0)
+					if(maillon->isMine == 0 && maillon->isFlag == 0)
 						return 0;
 			}
 	}
