@@ -40,42 +40,45 @@ void randomMines(maillon* liste, int longueur, int largeur)
 	}
 }
 
+maillon*  createMaillon(int i, int j)
+{
+	maillon* first;
+	maillon* element = (maillon*)malloc(sizeof(maillon));
+	element->abscisse = j;
+	element->ordonnee = i;
+	element->isFlag = 0;
+	element->isOpened = 0;
+	element->isMine = 0;
+	element->droite = NULL;
+	element->gauche = NULL;
+	element->haut = NULL;
+	element->bas = NULL;
+	if(j > 1){
+		maillon* elementgauche = find(first,j-1,i);
+		element->gauche = elementgauche;
+		elementgauche->droite = element;
+	}
+	if(i > 1){
+		maillon* elementhaut = find(first,j,i-1);
+		element->haut = elementhaut;
+		elementhaut->bas = element;
+	}
+	if(i == 1 && j == 1){
+		first = element;
+	}
+	return first;
+}
+
 maillon* initiate(int longueur, int largeur)
 {
 	int i,j;
-	maillon* elementgauche;
-	maillon* elementhaut;
 	maillon* first;
-	maillon* element;
-	for(i = 1; i <= largeur; i++){
-		for(j=1; j <= longueur;j++){
-			element = (maillon*)malloc(sizeof(maillon));
-			element->abscisse = j;
-			element->ordonnee = i;
-			element->isFlag = 0;
-			element->isOpened = 0;
-			element->isMine = 0; //will change to isMine = function mine;
-			element->droite = NULL;
-			element->gauche = NULL;
-			element->haut = NULL;
-			element->bas = NULL;
-			if(j > 1){
-			elementgauche = find(first,j-1,i);
-			element->gauche = elementgauche;
-			elementgauche->droite = element;
-			}
-			if(i > 1){
-			elementhaut = find(first,j,i-1);
-			element->haut = elementhaut;
-			elementhaut->bas = element;
-			}
-			if(i == 1 && j == 1){
-				first = element;
-			}
+	for(i = 1; i <= longueur; i++){
+		for(j=1; j <= largeur;j++){
+			first = createMaillon(i,j);
 		}
 	}
-    if (first == NULL)
-    {
+    if (first == NULL){
         exit(EXIT_FAILURE);
     }
 	randomMines(first, longueur, largeur);
@@ -86,11 +89,11 @@ int winChecker(maillon* liste, int abscisse, int ordonnee)
 {
 	int i,j;
 	for(i = 1; i <= abscisse;i++){
-			for(j = 1; j <= ordonnee;j++){
-					maillon* maillon = find(liste,i,j);
-					if(maillon->isMine == 1 && maillon->isFlag == 0)
-						return 0;
-			}
+		for(j = 1; j <= ordonnee;j++){
+			maillon* maillon = find(liste,i,j);
+			if(maillon->isMine == 1 && maillon->isFlag == 0)
+				return 0;
+		}
 	}
 	return 1;
 }
@@ -120,11 +123,3 @@ int minesNumber(maillon* maillon)
 	}
 	return number;
 }
-
-
-
-
-
-
-
-
