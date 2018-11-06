@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "liste_chainee.c"
 #include "actions.c"
 #define CLEAR_BUFFER while (getchar() != '\n')
@@ -38,7 +39,7 @@
 	  	}
       chainlength = 0;
       char actionchaine[5];
-      printf("Choisissez une action ('undo', 'redo', 'open' or 'flag) : ");
+      printf("Choisissez une action ('open' or 'flag) : ");
       fgets(actionchaine, 5, stdin);
       if (strcmp(actionchaine, "undo") != 0 && strcmp(actionchaine, "redo") != 0 && strcmp(actionchaine, "open") != 0 && strcmp(actionchaine, "flag") != 0) {
         printf("Vous ne pouvez utiliser que les commandes undo, redo, open ou flag\n");
